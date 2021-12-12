@@ -30,14 +30,22 @@
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => [
                     ['label' => 'Меню', 'options' => ['class' => 'header']],
-                    ['label' => 'Объекты', 'icon' => 'circle', 'url' => ['/object-system']],
+                    [
+                        'label' => 'Объекты',
+                        'icon' => 'circle',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => 'Объекты', 'icon' => 'circle', 'url' => ['/object-system']],
+                            ['label' => 'Категории объектов', 'icon' => 'file', 'url' => ['/object-category'],],
+                        ],
+                    ],
                     [
                         'label' => 'Логи',
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
+                            ['label' => 'Логи', 'icon' => 'file', 'url' => ['/log'],],
                             ['label' => 'Категории логов', 'icon' => 'file', 'url' => ['/log-category'],],
-                            ['label' => 'Логи', 'icon' => 'file', 'url' => ['/gii'],],
                         ],
                     ],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],

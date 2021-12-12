@@ -29,6 +29,7 @@ class LogCategory extends \yii\db\ActiveRecord
         return [
             [['name'], 'string', 'max' => 255],
             [['description'], 'string', 'max' => 1000],
+            [['priority',], 'integer'],
         ];
     }
 
@@ -41,6 +42,7 @@ class LogCategory extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Наименование',
             'description' => 'Описание',
+            'priority' => 'Приоритет',
         ];
     }
 }
