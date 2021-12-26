@@ -64,7 +64,7 @@ class ObjectCategorySearch extends ObjectCategory
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'description', $this->description]);
-
+            
         return $dataProvider;
     }
 }

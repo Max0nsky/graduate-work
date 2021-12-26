@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\ObjectCategory */
 
-$this->title = 'Create Object Category';
+$this->title = 'Добавить категорию объектов';
 $this->params['breadcrumbs'][] = ['label' => 'Object Categories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

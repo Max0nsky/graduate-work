@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "object_system".
@@ -44,6 +45,27 @@ class ObjectSystem extends \yii\db\ActiveRecord
             'name' => 'Наименование',
             'description' => 'Описание',
             'priority' => 'Приоритет',
+            'object_category_id' => 'Категория',
         ];
+    }
+
+    public function getObjectCategory()
+    {
+        return $this->hasOne(ObjectCategory::class, ['id' => 'object_category_id']);
+    }
+
+    public static function dropDown()
+    {
+        return ArrayHelper::map(self::find()->all(), 'id', 'name');
+    }
+
+    public static function getListForSelect( $attributeName = null )
+    {
+        $values = [];
+        if ( ! is_null( $attributeName ) ) {
+            $values =  ArrayHelper::map(self::find()->all(), 'id', $attributeName );
+        }
+
+        return $values;
     }
 }

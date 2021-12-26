@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "objectct_category".
@@ -45,5 +46,20 @@ class ObjectCategory extends \yii\db\ActiveRecord
             'description' => 'Описание',
             'priority' => 'Приоритет',
         ];
+    }
+
+    public static function dropDown()
+    {
+        return ArrayHelper::map(self::find()->all(), 'id', 'name');
+    }
+
+    public static function getListForSelect( $attributeName = null )
+    {
+        $values = [];
+        if ( ! is_null( $attributeName ) ) {
+            $values =  ArrayHelper::map(self::find()->all(), 'id', $attributeName );
+        }
+
+        return $values;
     }
 }

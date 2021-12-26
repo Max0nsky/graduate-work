@@ -1,5 +1,7 @@
 <?php
 
+use common\models\ObjectCategory;
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -13,7 +15,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-5">
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-sm-2">
@@ -32,12 +34,27 @@ use yii\widgets\ActiveForm;
             ]);
             ?>
         </div>
+        <div class="col-sm-3">
+            <div class="col-sm-12">
+                <?=
+                $form->field($model, 'object_category_id')->widget(Select2::class, [
+                    'data' => ObjectCategory::getListForSelect('name'),
+                    'options' => ['placeholder' => 'Выберите категорию'],
+                    'pluginOptions' => [
+                        'tabindex' => false,
+                        'tags' => false,
+                        'tokenSeparators' => [',', ' '],
+                    ],
+                ])->label('Категория');
+                ?>
+            </div>
+        </div>
+    
     </div>
     <div class="row">
         <div class="col-sm-10">
             <?= $form->field($model, 'description')->textarea(['rows' => '6']) ?>
         </div>
-
     </div>
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

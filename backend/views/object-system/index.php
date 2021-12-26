@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+// use kartik\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
@@ -27,6 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'name',
             'description',
+            [
+                'attribute' => 'object_category_id',
+                'content' => function ($model) {
+                    $objectCategory = $model->objectCategory;
+                    return '#' . $objectCategory->id . ' ' . $objectCategory->name;
+                }
+            ],
             'priority',
 
             ['class' => 'yii\grid\ActionColumn'],

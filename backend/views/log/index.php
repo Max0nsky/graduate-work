@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\search\LogSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Logs';
+$this->title = 'Логи';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="log-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Log', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить лог', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -29,13 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'log_category_id',
             'name',
-            'description',
             'user_id',
             //'object_id',
             //'priority',
             //'damages',
             //'type',
-            //'date',
+            'date',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

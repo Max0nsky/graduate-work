@@ -20,7 +20,7 @@ class ObjectSystemSearch extends ObjectSystem
         return [
             [['name'], 'safe'],
             [['description'], 'safe'],
-            [['priority'], 'integer'],
+            [['priority', 'object_category_id'], 'integer'],
         ];
     }
 
@@ -57,7 +57,8 @@ class ObjectSystemSearch extends ObjectSystem
         $query->andFilterWhere(['like', 'name', $this->name]);
         $query->andFilterWhere(['like', 'description', $this->description]);
         $query->andFilterWhere(['=', 'priority', $this->priority]);
-
+        $query->andFilterWhere(['=', 'object_category_id', $this->object_category_id]);
+        
         return $dataProvider;
     }
 }
