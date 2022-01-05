@@ -2,21 +2,20 @@
 
 namespace backend\controllers;
 
-use common\models\Log;
+use common\models\Audit;
 use common\models\ObjectCategory;
 use common\models\ObjectSystem;
-use common\models\search\LogSearch;
+use common\models\search\AuditSearch;
 use common\models\Threat;
 use SimpleXLSX;
-use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * LogController implements the CRUD actions for Log model.
+ * AuditController implements the CRUD actions for Audit model.
  */
-class LogController extends Controller
+class AuditController extends Controller
 {
     /**
      * @inheritDoc
@@ -37,35 +36,12 @@ class LogController extends Controller
     }
 
     /**
-     * Lists all Log models.
+     * Lists all Audit models.
      * @return mixed
      */
     public function actionIndex()
     {
-
-        // $path = __DIR__ . '\thrlist.xlsx';
-
-        // $sheet = SimpleXLSX::parse($path)->rowsEx();
-        // unset($sheet[0]);
-        // unset($sheet[1]);
-
-        // $obs = ObjectSystem::find()->indexBy('name')->all();
-
-        // foreach ($sheet as $row) {
-        //     $threat = new Threat();
-        //     $threat->name = $row[1]['value'];
-        //     $threat->description = $row[2]['value'];
-        //     $threat->source = $row[3]['value'];
-        //     $threat->object_id = $obs[(string)$row[4]['value']]->id;
-        //     $threat->charact_k = $row[5]['value'];
-        //     $threat->charact_c = $row[6]['value'];
-        //     $threat->charact_d = $row[7]['value'];
-        //     $threat->save();
-        // }
-        // var_dump(1);die;
-
-
-        $searchModel = new LogSearch();
+        $searchModel = new AuditSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -75,7 +51,7 @@ class LogController extends Controller
     }
 
     /**
-     * Displays a single Log model.
+     * Displays a single Audit model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -88,22 +64,18 @@ class LogController extends Controller
     }
 
     /**
-     * Creates a new Log model.
+     * Creates a new Audit model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Log();
+        $model = new Audit();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-
-                $userModel = Yii::$app->user->identity;
-                $model->user_id = $userModel->id;
-
                 $model->save();
-                return $this->redirect(['index']);
+                return $this->redirect(['audit-step-one', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -115,7 +87,7 @@ class LogController extends Controller
     }
 
     /**
-     * Updates an existing Log model.
+     * Updates an existing Audit model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -136,7 +108,7 @@ class LogController extends Controller
     }
 
     /**
-     * Deletes an existing Log model.
+     * Deletes an existing Audit model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -150,15 +122,15 @@ class LogController extends Controller
     }
 
     /**
-     * Finds the Log model based on its primary key value.
+     * Finds the Audit model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Log the loaded model
+     * @return Audit the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Log::findOne($id)) !== null) {
+        if (($model = Audit::findOne($id)) !== null) {
             return $model;
         }
 

@@ -18,23 +18,37 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Добавить лог', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'log_category_id',
+ 
             'name',
-            'user_id',
-            //'object_id',
-            //'priority',
-            //'damages',
-            //'type',
-            'date',
+
+            [
+                'attribute' => 'log_category_id',
+                'content' => function ($model) {
+                    $logCategory = $model->logCategory;
+                    return '#' . $logCategory->id . ' ' . $logCategory->name;
+                }
+            ],
+
+            [
+                'attribute' => 'user_id',
+                'content' => function ($model) {
+                    $user = $model->user;
+                    return '#' . $user->id . ' ' . $user->username;
+                }
+            ],
+
+            [
+                'attribute' => 'date',
+                'format' => ['date', 'php:d.m.Y h:m'],
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

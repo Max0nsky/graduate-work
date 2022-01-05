@@ -75,6 +75,11 @@ class Log extends \yii\db\ActiveRecord
         return $this->hasOne(ObjectSystem::class, ['id' => 'object_id']);
     }
 
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
     public function getDateTime()
     {
         return $this->date ? \DateTime::createFromFormat('U', $this->date)
