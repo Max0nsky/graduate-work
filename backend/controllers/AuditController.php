@@ -64,9 +64,7 @@ class AuditController extends Controller
     }
 
     /**
-     * Creates a new Audit model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * Создание нового аудита
      */
     public function actionCreate()
     {
@@ -86,34 +84,71 @@ class AuditController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing Audit model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
+    public function actionAuditStepOne($id)
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post())) {
+        if ($this->request->isPost && ($post = $this->request->post())) {
+
+            $model->load($this->request->post());
+
+            $model->saveLogCategories();
+            $model->saveObjectCategories();
+            $model->saveObjectSystems();
+
+            $model->status = 1;
             $model->save();
-            return $this->redirect(['index']);
+            return $this->redirect(['audit-step-two', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
+        return $this->render('audit_step_one', [
             'model' => $model,
         ]);
     }
 
-    /**
-     * Deletes an existing Audit model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    public function actionAuditStepTwo($id)
+    {
+        $model = $this->findModel($id);
+        var_dump($model);
+        die;
+        if ($this->request->isPost && ($post = $this->request->post())) {
+
+            $model->load($this->request->post());
+
+            $model->status = 2;
+            $model->save();
+            return $this->redirect(['audit-step-three', 'id' => $model->id]);
+        }
+
+        return $this->render('audit_step_two', [
+            'model' => $model,
+        ]);
+    }
+
+
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        // if ($this->request->isPost && $model->load($this->request->post())) {
+        //     $model->save();
+        //     return $this->redirect(['index']);
+        // }
+
+        if ($model->status == 0) {
+            return $this->redirect(['audit-step-one', 'id' => $model->id]);
+        } elseif ($model->status == 1) {
+            return $this->redirect(['audit-step-two', 'id' => $model->id]);
+        } elseif ($model->status == 2) {
+            return $this->redirect(['audit-step-three', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -121,13 +156,6 @@ class AuditController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Audit model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Audit the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Audit::findOne($id)) !== null) {

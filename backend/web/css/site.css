@@ -102,3 +102,8 @@ a.desc:after {
 .navbar-nav {
     flex-direction: row;
 }
+
+.select-two {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}

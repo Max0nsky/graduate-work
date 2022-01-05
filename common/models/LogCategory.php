@@ -61,4 +61,13 @@ class LogCategory extends \yii\db\ActiveRecord
 
         return $values;
     }
+
+    // public static function getListForSelectNotEmpty( $attributeName = null )
+    // {
+    //     $values = [];
+    //     if ( ! is_null( $attributeName ) ) {
+    //         $values =  ArrayHelper::map(self::find()->all(), 'id', $attributeName );
+    //     }
+    //     return $values;
+    // }
 }

@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Audit */
 
-$this->title = 'Create Audit';
-$this->params['breadcrumbs'][] = ['label' => 'Audits', 'url' => ['index']];
+$this->title = 'Создание аудита';
+$this->params['breadcrumbs'][] = ['label' => 'Список', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="audit-create">
