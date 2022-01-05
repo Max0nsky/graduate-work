@@ -2,20 +2,16 @@
 
 namespace backend\controllers;
 
-use common\models\Log;
-use common\models\ObjectCategory;
-use common\models\ObjectSystem;
-use common\models\search\LogSearch;
 use common\models\Threat;
-use SimpleXLSX;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * LogController implements the CRUD actions for Log model.
+ * ThreatController implements the CRUD actions for Threat model.
  */
-class LogController extends Controller
+class ThreatController extends Controller
 {
     /**
      * @inheritDoc
@@ -36,69 +32,57 @@ class LogController extends Controller
     }
 
     /**
-     * Lists all Log models.
+     * Lists all Threat models.
      * @return mixed
      */
     public function actionIndex()
     {
-
-        // $path = __DIR__ . '\thrlist.xlsx';
-
-        // $sheet = SimpleXLSX::parse($path)->rowsEx();
-        // unset($sheet[0]);
-        // unset($sheet[1]);
-
-        // $obs = ObjectSystem::find()->indexBy('name')->all();
-
-        // foreach ($sheet as $row) {
-        //     $threat = new Threat();
-        //     $threat->name = $row[1]['value'];
-        //     $threat->description = $row[2]['value'];
-        //     $threat->source = $row[3]['value'];
-        //     $threat->object_id = $obs[(string)$row[4]['value']]->id;
-        //     $threat->charact_k = $row[5]['value'];
-        //     $threat->charact_c = $row[6]['value'];
-        //     $threat->charact_d = $row[7]['value'];
-        //     $threat->save();
-        // }
-        // var_dump(1);die;
-
-
-        $searchModel = new LogSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Threat::find(),
+            /*
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+            */
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Log model.
+     * Displays a single Threat model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
+        return $this->redirect(['index']);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Log model.
+     * Creates a new Threat model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Log();
+        $model = new Threat();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->save();
-                return $this->redirect(['index']);
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -110,7 +94,7 @@ class LogController extends Controller
     }
 
     /**
-     * Updates an existing Log model.
+     * Updates an existing Threat model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -120,9 +104,8 @@ class LogController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post())) {
-            $model->save();
-            return $this->redirect(['index']);
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -131,7 +114,7 @@ class LogController extends Controller
     }
 
     /**
-     * Deletes an existing Log model.
+     * Deletes an existing Threat model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -145,15 +128,15 @@ class LogController extends Controller
     }
 
     /**
-     * Finds the Log model based on its primary key value.
+     * Finds the Threat model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Log the loaded model
+     * @return Threat the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Log::findOne($id)) !== null) {
+        if (($model = Threat::findOne($id)) !== null) {
             return $model;
         }
 
