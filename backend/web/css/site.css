@@ -107,3 +107,7 @@ a.desc:after {
     margin-top: 10px;
     margin-bottom: 5px;
 }
+
+.audit-link {
+    margin-bottom: 15px;
+}

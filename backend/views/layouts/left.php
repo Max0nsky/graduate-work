@@ -50,6 +50,7 @@
                     ],
                     ['label' => 'Угрозы', 'icon' => 'bomb', 'url' => ['/threat']],
                     ['label' => 'Аудит безопасности', 'icon' => 'list', 'url' => ['/audit']],
+                    ['label' => 'Рекомендации', 'icon' => 'book', 'url' => ['/recommendation']],
 
                     
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],

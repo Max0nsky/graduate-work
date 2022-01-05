@@ -109,15 +109,13 @@ class AuditController extends Controller
     public function actionAuditStepTwo($id)
     {
         $model = $this->findModel($id);
-        var_dump($model);
-        die;
+
         if ($this->request->isPost && ($post = $this->request->post())) {
 
-            $model->load($this->request->post());
-
-            $model->status = 2;
-            $model->save();
-            return $this->redirect(['audit-step-three', 'id' => $model->id]);
+            // $model->load($this->request->post());
+            // $model->status = 2;
+            // $model->save();
+            // return $this->redirect(['audit-step-three', 'id' => $model->id]);
         }
 
         return $this->render('audit_step_two', [

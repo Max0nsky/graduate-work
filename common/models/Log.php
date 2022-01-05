@@ -97,13 +97,24 @@ class Log extends \yii\db\ActiveRecord
         return ArrayHelper::map(self::find()->all(), 'id', 'name');
     }
 
-    public static function getListForSelect( $attributeName = null )
+    public static function getListForSelect($attributeName = null)
     {
         $values = [];
-        if ( ! is_null( $attributeName ) ) {
-            $values =  ArrayHelper::map(self::find()->all(), 'id', $attributeName );
+        if (!is_null($attributeName)) {
+            $values =  ArrayHelper::map(self::find()->all(), 'id', $attributeName);
         }
 
         return $values;
+    }
+
+    public static function getDamageForLogs($logs)
+    {
+        $damage = 0;
+        if (!empty($logs)) {
+            foreach ($logs as $log) {
+                $damage += $log->damages;
+            }
+        }
+        return $damage;
     }
 }

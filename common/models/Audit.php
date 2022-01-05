@@ -72,6 +72,37 @@ class Audit extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getLogs()
+    {
+        $query = Log::find();
+
+        $query->where(['>=', 'date', $this->date_start]);
+        $query->andWhere(['<=', 'date', $this->date_finish]);
+
+        $logCategoriesIds = $this->logCategoryIds;
+        $objectCategoriesIds = $this->logCategoryIds;
+        $objectSystemsIds = $this->ObjectSystemsIds;
+
+        if (!empty($logCategoriesIds)) {
+            $query->andWhere(['in', 'log_category_id', $logCategoriesIds]);
+        }
+
+        if (!empty($objectCategoriesIds)) {
+
+            $objectCategories = ObjectSystem::find()->where(['in', 'object_category_id', $objectCategoriesIds])->all();
+            foreach ($objectCategories as $objectCategory) {
+                if (!in_array($objectCategory->id, $objectSystemsIds)) {
+                    $objectSystemsIds[] = $objectCategory->id;
+                }
+            }
+        }
+        if (!empty($objectSystemsIds)) {
+            $query->andWhere(['in', 'object_id', $objectSystemsIds]);
+        }
+
+        return $query->all();
+    }
+
     public function getDateTimeStart()
     {
         return $this->date ? \DateTime::createFromFormat('U', $this->date)
@@ -97,12 +128,30 @@ class Audit extends \yii\db\ActiveRecord
         $this->date_finish = $date->format('U');
     }
 
+    public function getModelsLogCategories()
+    {
+        return $this->hasMany(LogCategory::className(), ['id' => 'log_category_id'])
+            ->viaTable(AuditLogCategory::tableName(), ['audit_id' => 'id']);
+    }
+
+    public function getModelsObjectCategories()
+    {
+        return $this->hasMany(ObjectCategory::className(), ['id' => 'object_category_id'])
+            ->viaTable(AuditObjectCategory::tableName(), ['audit_id' => 'id']);
+    }
+
+    public function getModelsObjectSystems()
+    {
+        return $this->hasMany(ObjectSystem::className(), ['id' => 'object_system_id'])
+            ->viaTable(AuditObjectSystem::tableName(), ['audit_id' => 'id']);
+    }
+    
     public function getLogCategoryIds()
     {
         $ids = [];
         $models = AuditLogCategory::find()->where(['audit_id' => $this->id])->indexBy('id')->all();
-        if(!empty($models)){
-            foreach($models as $model){
+        if (!empty($models)) {
+            foreach ($models as $model) {
                 $ids[] = $model->log_category_id;
             }
         }
@@ -113,8 +162,8 @@ class Audit extends \yii\db\ActiveRecord
     {
         $ids = [];
         $models = AuditObjectCategory::find()->where(['audit_id' => $this->id])->indexBy('id')->all();
-        if(!empty($models)){
-            foreach($models as $model){
+        if (!empty($models)) {
+            foreach ($models as $model) {
                 $ids[] = $model->object_category_id;
             }
         }
@@ -125,8 +174,8 @@ class Audit extends \yii\db\ActiveRecord
     {
         $ids = [];
         $models = AuditObjectSystem::find()->where(['audit_id' => $this->id])->indexBy('id')->all();
-        if(!empty($models)){
-            foreach($models as $model){
+        if (!empty($models)) {
+            foreach ($models as $model) {
                 $ids[] = $model->object_system_id;
             }
         }
