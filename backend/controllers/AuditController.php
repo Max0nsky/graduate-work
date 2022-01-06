@@ -92,6 +92,7 @@ class AuditController extends Controller
      */
     public function actionView($id)
     {
+        die;
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

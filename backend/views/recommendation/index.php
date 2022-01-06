@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Recommendation;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -13,7 +14,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="recommendation-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <?php $costs = Recommendation::getNeedFactCosts() ?>
+    <h5>Ожидаемые затраты: <?= $costs['needCost'] ?></h5>
+    <h5>Факические затраты: <?= $costs['factCost'] ?></h5>
+    <h5>Разница: <?= $costs['needCost'] - $costs['factCost'] ?></h5>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -26,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'content' => function ($model) {
                     $str = '<b> #' . $model->audit_id . '</b> ';
-                    $str .= '<a href="'. Url::to(['audit/statistic', 'id' => $model->audit_id]).'">Просмотр</a>';
+                    $str .= '<a href="' . Url::to(['audit/statistic', 'id' => $model->audit_id]) . '">Просмотр</a>';
                     return $str;
                 }
             ],

@@ -35,6 +35,9 @@ class Audit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            
+            [['name'], 'required'],
+            [['description'], 'required'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 255],
             [['date', 'status'], 'integer'],

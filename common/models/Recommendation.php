@@ -102,11 +102,42 @@ class Recommendation extends \yii\db\ActiveRecord
     public function getNameStatus()
     {
         $statuses = [
-            0 => '<p style="color:#FF8C00;">#'. $this->status .' Создана</p>',
-            1 => '<p style="color:#8B0000;">#'. $this->status .' Не выполнено</p>',
-            2 => '<p style="color:DarkGreen;">#'. $this->status .' Выполнено</p>',
+            0 => '<p style="color:#FF8C00;">#' . $this->status . ' Создана</p>',
+            1 => '<p style="color:#8B0000;">#' . $this->status . ' Не выполнено</p>',
+            2 => '<p style="color:DarkGreen;">#' . $this->status . ' Выполнено</p>',
         ];
 
         return $statuses[$this->status];
+    }
+
+    public static function getRecs()
+    {
+        return self::find()->where(['!=', 'status', 0])->count();
+    }
+
+    public static function getSuccessRecs()
+    {
+        return self::find()->where(['=', 'status', 1])->count();
+    }
+
+    public static function getErrorRecs()
+    {
+        return self::find()->where(['=', 'status', 2])->count();
+    }
+
+    public static function getNeedFactCosts()
+    {
+        $needCost = 0;
+        $factCost = 0;
+
+        $recs = self::find()->where(['=', 'status', 1])->all();
+        if (!empty($recs)) {
+            foreach ($recs as $rec) {
+                $needCost += $rec->cost_need;
+                $factCost += $rec->cost_fact;
+            }
+        }
+
+        return ['needCost' => $needCost, 'factCost' => $factCost];
     }
 }

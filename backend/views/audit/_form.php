@@ -22,7 +22,6 @@ use yii\widgets\ActiveForm;
         <div class="col-sm-6">
             <?= $form->field($model, 'dateTimeStart')->widget(DateTimePicker::classname(), [
                 'options' => ['placeholder' => 'Введите время начала...'],
-                'convertFormat' => true,
                 'pluginOptions' => [
                     'convertFormat' => true,
                     'autoclose' => true,
@@ -37,7 +36,6 @@ use yii\widgets\ActiveForm;
         <div class="col-sm-6">
             <?= $form->field($model, 'dateTimeFinish')->widget(DateTimePicker::classname(), [
                 'options' => ['placeholder' => 'Введите время начала...'],
-                'convertFormat' => true,
                 'pluginOptions' => [
                     'convertFormat' => true,
                     'autoclose' => true,
