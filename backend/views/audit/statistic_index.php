@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
 
                 <div class="col-sm-2 audit-link">
-                    <a class="btn btn-info" href="">CVSS-калькулятор</a>
+                    <a class="btn btn-info" href="<?= Url::to(['audit/cvss']); ?>">CVSS-калькулятор</a>
                 </div>
                 <div class="col-sm-2 audit-link">
                     <a class="btn btn-info" href="<?= Url::to(['audit/add-recommendation', 'id' => $modelAudit->id]); ?>">Добавить рекомендации</a>

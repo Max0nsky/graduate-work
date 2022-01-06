@@ -167,7 +167,6 @@ class AuditController extends Controller
         }
 
         return $this->redirect(['index']);
-
     }
 
     public function actionAddRecommendation($id)
@@ -267,6 +266,18 @@ class AuditController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    public function actionCvss()
+    {
+        if ($this->request->isPost && ($post = $this->request->post())) {
+
+            $resultCvss = Audit::calculateCvss($post);
+            return $this->render('cvss_result', [
+                'resultCvss' => $resultCvss,
+            ]);
+        }
+        return $this->render('cvss');
+    }
+
     public function calculatePriorityLogs($logs)
     {
         $resArr = [];
@@ -278,7 +289,7 @@ class AuditController extends Controller
             }
             $total = count($logs);
             foreach ($logPriority as $priority => $count) {
-                $resArr[] = [ '#' . $priority, round((($count / $total) * 100), 1)];
+                $resArr[] = ['#' . $priority, round((($count / $total) * 100), 1)];
             }
         }
 
