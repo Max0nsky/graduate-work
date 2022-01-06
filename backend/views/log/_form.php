@@ -22,15 +22,22 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="col-sm-3">
             <?= $form->field($model, 'dateTime')->widget(DateTimePicker::classname(), [
+                // 'options' => ['placeholder' => 'Введите время ...'],
+                // 'pluginOptions' => [
+                //     'convertFormat' => true,
+                //     'autoclose' => true,
+                //     'format' => 'dd.mm.yyyy hh:ii',
+                //     'language' => 'ru',
+                //     'weekStart' => 1, //неделя начинается с понедельника
+                //     'todayBtn' => true, //снизу кнопка "сегодня"
+                // ]
                 'options' => ['placeholder' => 'Введите время ...'],
-                'convertFormat' => true,
                 'pluginOptions' => [
                     'convertFormat' => true,
                     'autoclose' => true,
-                    'format' => 'dd.mm.yyyy h:i',
-                    'language' => 'ru',
-                    'weekStart' => 1, //неделя начинается с понедельника
-                    'todayBtn' => true, //снизу кнопка "сегодня"
+                    'format' => 'dd.mm.yyyy hh:ii',
+                    'startDate' => '01-Mar-2014 12:00 AM',
+                    'todayHighlight' => true
                 ]
             ]); ?>
         </div>

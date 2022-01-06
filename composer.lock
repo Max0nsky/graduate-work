@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "19a1f1d2c54a0b9c89a8cd2efab99730",
+    "content-hash": "2b0c1f5aca0a4a7c5595f2c0ca9cd9e1",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -1082,6 +1082,52 @@
                 "yii"
             ],
             "time": "2017-01-11T14:05:47+00:00"
+        },
+        {
+            "name": "security-database/cvss",
+            "version": "v2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/security-database/cvssv3.git",
+                "reference": "2b9d073a3a53412f497ee3f4f6fff0aa90714105"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/security-database/cvssv3/zipball/2b9d073a3a53412f497ee3f4f6fff0aa90714105",
+                "reference": "2b9d073a3a53412f497ee3f4f6fff0aa90714105",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/Cvss3.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Security-Database",
+                    "email": "info@security-database.com",
+                    "homepage": "https://www.security-database.com"
+                }
+            ],
+            "description": "Common Vulnerability Scoring System Version 3.1",
+            "homepage": "https://github.com/security-database/cvssv3",
+            "keywords": [
+                "cvss",
+                "cvssv3",
+                "security"
+            ],
+            "time": "2020-06-12T15:13:25+00:00"
         },
         {
             "name": "select2/select2",

@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\Audit;
 use common\models\ObjectCategory;
 use common\models\ObjectSystem;
+use common\models\Recommendation;
 use common\models\search\AuditSearch;
 use common\models\Threat;
 use SimpleXLSX;
@@ -109,13 +110,8 @@ class AuditController extends Controller
     public function actionAuditStepTwo($id)
     {
         $model = $this->findModel($id);
-
         if ($this->request->isPost && ($post = $this->request->post())) {
-
-            // $model->load($this->request->post());
-            // $model->status = 2;
-            // $model->save();
-            // return $this->redirect(['audit-step-three', 'id' => $model->id]);
+            // Завершение аудита
         }
 
         return $this->render('audit_step_two', [
@@ -123,15 +119,72 @@ class AuditController extends Controller
         ]);
     }
 
+    public function actionAddRecommendation($id)
+    {
+        $model = $this->findModel($id);
+        $modelRecom = new Recommendation();
+
+        if ($model->status == 1) {
+            if ($this->request->isPost && ($post = $this->request->post())) {
+
+                $modelRecom->load($post);
+                $modelRecom->date = strtotime(date('Y-m-d'));
+                $modelRecom->status = 0;
+                $modelRecom->audit_id = $model->id;
+                $modelRecom->save();
+
+                return $this->redirect(['audit-step-two', 'id' => $model->id]);
+            }
+        }
+        return $this->render('add_recommendation', [
+            'model' => $model,
+            'modelRecom' => $modelRecom,
+        ]);
+    }
+
+    public function actionUpdateRecommendation($id)
+    {
+        $modelRecom = Recommendation::find()->where(['id' => $id])->one();
+
+        if (empty($modelRecom)) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        $model = $this->findModel($modelRecom->audit_id);
+
+        if ($model->status == 1) {
+            if ($this->request->isPost && ($post = $this->request->post())) {
+
+                $modelRecom->load($post);
+                $modelRecom->date = strtotime(date('Y-m-d'));
+                $modelRecom->status = 0;
+                $modelRecom->audit_id = $model->id;
+                $modelRecom->save();
+
+                return $this->redirect(['audit-step-two', 'id' => $model->id]);
+            }
+        }
+        return $this->render('add_recommendation', [
+            'model' => $model,
+            'modelRecom' => $modelRecom,
+        ]);
+    }
+
+    public function actionDeleteRecommendation($id)
+    {
+        $modelRecom = Recommendation::find()->where(['id' => $id])->one();
+        if (!empty($modelRecom)) {
+            $model = $this->findModel($modelRecom->audit_id);
+            $modelRecom->delete();
+            return $this->redirect(['audit-step-two', 'id' => $model->id]);
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        // if ($this->request->isPost && $model->load($this->request->post())) {
-        //     $model->save();
-        //     return $this->redirect(['index']);
-        // }
 
         if ($model->status == 0) {
             return $this->redirect(['audit-step-one', 'id' => $model->id]);

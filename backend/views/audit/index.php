@@ -6,7 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Audits';
+$this->title = 'Аудит';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="audit-index">
@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Audit', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Начать новый аудит', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -26,9 +26,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'description:ntext',
-            'date',
-            'date_start',
-            //'date_finish',
+            [
+                'attribute' => 'date',
+                'format' => ['date', 'php:d.m.Y'],
+            ],
+            [
+                'attribute' => 'date_start',
+                'format' => ['date', 'php:d.m.Y h:m'],
+            ],
+            [
+                'attribute' => 'date_finish',
+                'format' => ['date', 'php:d.m.Y h:m'],
+            ],
             //'status',
 
             ['class' => 'yii\grid\ActionColumn'],

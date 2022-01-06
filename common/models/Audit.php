@@ -105,13 +105,13 @@ class Audit extends \yii\db\ActiveRecord
 
     public function getDateTimeStart()
     {
-        return $this->date ? \DateTime::createFromFormat('U', $this->date)
+        return $this->date_start ? \DateTime::createFromFormat('U', $this->date_start)
             ->modify('+3 hour')->format('d.m.Y H:i') : '';
     }
 
     public function getDateTimeFinish()
     {
-        return $this->date ? \DateTime::createFromFormat('U', $this->date)
+        return $this->date_finish ? \DateTime::createFromFormat('U', $this->date_finish)
             ->modify('+3 hour')->format('d.m.Y H:i') : '';
     }
 
@@ -126,6 +126,11 @@ class Audit extends \yii\db\ActiveRecord
     {
         $date = \DateTime::createFromFormat('d.m.Y H:i', $string);
         $this->date_finish = $date->format('U');
+    }
+
+    public function getRecommendations()
+    {
+        return $this->hasMany(Recommendation::className(), ['audit_id' => 'id']);
     }
 
     public function getModelsLogCategories()

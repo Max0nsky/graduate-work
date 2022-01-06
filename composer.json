@@ -23,7 +23,8 @@
         "kartik-v/yii2-widget-datepicker": "@dev",
         "kartik-v/yii2-grid": "^3.3",
         "kartik-v/yii2-widget-datetimepicker": "^1.5",
-        "shuchkin/simplexlsx": "^0.8.31"
+        "shuchkin/simplexlsx": "^0.8.31",
+        "security-database/cvss": "^2.2"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
