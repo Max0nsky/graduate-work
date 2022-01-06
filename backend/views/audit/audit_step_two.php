@@ -26,10 +26,10 @@ $recommendations = $model->recommendations;
     <div class="row">
         <div class="col-sm-12">
             <div class="col-sm-2 audit-link">
-                <a class="btn btn-danger" href="">Завершить аудит</a>
+                <a class="btn btn-danger" href="<?= Url::to(['audit/finish', 'id' => $model->id]); ?>">Завершить аудит</a>
             </div>
             <div class="col-sm-2 audit-link">
-                <a class="btn btn-info" href="">Просмотр статистики</a>
+                <a class="btn btn-info" href="<?= Url::to(['audit/statistic', 'id' => $model->id]); ?>">Просмотр статистики</a>
             </div>
 
             <div class="col-sm-2 audit-link">
@@ -38,7 +38,6 @@ $recommendations = $model->recommendations;
             <div class="col-sm-2 audit-link">
                 <a class="btn btn-info" href="<?= Url::to(['audit/add-recommendation', 'id' => $model->id]); ?>">Добавить рекомендации</a>
             </div>
-
         </div>
     </div>
     <h1><?= Html::encode($this->title) ?></h1>
@@ -107,7 +106,7 @@ $recommendations = $model->recommendations;
                                         <div class="card-header">
                                             <h4 class="card-title w-100">
                                                 <a class="d-block w-100 collapsed" data-toggle="collapse" href="#collapse-<?= $i ?>" aria-expanded="false">
-                                                    <?= $recommendation->name ?>
+                                                    • <?= $recommendation->name ?>
                                                 </a>
                                             </h4>
                                         </div>

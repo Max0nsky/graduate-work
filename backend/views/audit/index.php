@@ -38,7 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'date_finish',
                 'format' => ['date', 'php:d.m.Y h:m'],
             ],
-            //'status',
+            [
+                'attribute' => 'status',
+                'content' => function ($model) {
+                    return '#' . $model->status . ' ' . $model->nameStatus;
+                }
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

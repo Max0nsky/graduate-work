@@ -231,4 +231,16 @@ class Audit extends \yii\db\ActiveRecord
             }
         }
     }
+
+    public function getNameStatus()
+    {
+        $statuses = [
+            0 => 'Шаг 1',
+            1 => 'Шаг 2',
+            2 => 'Завершен',
+            3 => 'Окончен',
+        ];
+
+        return $statuses[$this->status];
+    }
 }

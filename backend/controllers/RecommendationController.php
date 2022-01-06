@@ -38,7 +38,7 @@ class RecommendationController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Recommendation::find(),
+            'query' => Recommendation::find()->where(['in', 'status', [1, 2]]),
             /*
             'pagination' => [
                 'pageSize' => 50

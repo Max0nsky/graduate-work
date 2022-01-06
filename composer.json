@@ -24,7 +24,8 @@
         "kartik-v/yii2-grid": "^3.3",
         "kartik-v/yii2-widget-datetimepicker": "^1.5",
         "shuchkin/simplexlsx": "^0.8.31",
-        "security-database/cvss": "^2.2"
+        "security-database/cvss": "^2.2",
+        "miloschuman/yii2-highcharts-widget": "^9.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

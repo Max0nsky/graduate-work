@@ -7,7 +7,10 @@ use common\models\ObjectCategory;
 use common\models\ObjectSystem;
 use common\models\Recommendation;
 use common\models\search\AuditSearch;
+use common\models\search\LogAuditSearch;
+use common\models\search\LogSearch;
 use common\models\Threat;
+use Grav\Plugin\HighlightPlugin;
 use SimpleXLSX;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -43,11 +46,41 @@ class AuditController extends Controller
     public function actionIndex()
     {
         $searchModel = new AuditSearch();
+
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionStatistic($id)
+    {
+        $model = $this->findModel($id);
+
+        $searchModel = new LogAuditSearch();
+
+        $ids = [];
+        $logs = $model->logs;
+        if (!empty($logs)) {
+            foreach ($logs as $log) {
+                $ids[] = $log->id;
+            }
+        }
+
+        $searchModel->ids = $ids;
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        $diagr_priority = $this->calculatePriorityLogs($logs);
+        $diagr_category = $this->calculateCategoryLogs($logs);
+
+        return $this->render('statistic_index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'modelAudit' => $model,
+            'diagr_priority' => $diagr_priority,
+            'diagr_category' => $diagr_category,
         ]);
     }
 
@@ -110,13 +143,30 @@ class AuditController extends Controller
     public function actionAuditStepTwo($id)
     {
         $model = $this->findModel($id);
-        if ($this->request->isPost && ($post = $this->request->post())) {
-            // Завершение аудита
-        }
 
         return $this->render('audit_step_two', [
             'model' => $model,
         ]);
+    }
+
+    public function actionFinish($id)
+    {
+        $model = $this->findModel($id);
+        $recommendations = $model->recommendations;
+        if (($model->status == 1) && (count($recommendations) > 0)) {
+
+            $model->status = 2;
+
+            if ($model->save()) {
+                foreach ($recommendations as $recommendation) {
+                    $recommendation->status = 1;
+                    $recommendation->save();
+                }
+            }
+        }
+
+        return $this->redirect(['index']);
+
     }
 
     public function actionAddRecommendation($id)
@@ -191,7 +241,7 @@ class AuditController extends Controller
         } elseif ($model->status == 1) {
             return $this->redirect(['audit-step-two', 'id' => $model->id]);
         } elseif ($model->status == 2) {
-            return $this->redirect(['audit-step-three', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -214,5 +264,43 @@ class AuditController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function calculatePriorityLogs($logs)
+    {
+        $resArr = [];
+
+        $logPriority = [];
+        if (!empty($logs)) {
+            foreach ($logs as $log) {
+                $logPriority[$log->priority] += 1;
+            }
+            $total = count($logs);
+            foreach ($logPriority as $priority => $count) {
+                $resArr[] = [ '#' . $priority, round((($count / $total) * 100), 1)];
+            }
+        }
+
+        return $resArr;
+    }
+
+    public function calculateCategoryLogs($logs)
+    {
+        $resArr = [];
+
+        $logCats = [];
+        if (!empty($logs)) {
+
+            foreach ($logs as $log) {
+                $logCats[$log->logCategory->name] += 1;
+            }
+
+            $total = count($logs);
+            foreach ($logCats as $category => $count) {
+                $resArr[] = [$category, round((($count / $total) * 100), 1)];
+            }
+        }
+
+        return $resArr;
     }
 }
