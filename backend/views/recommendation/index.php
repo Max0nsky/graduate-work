@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -19,20 +20,41 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
             'name',
-            'description:ntext',
-            'audit_id',
-            'date',
-            //'date_need_execut',
-            //'date_fact_execut',
-            //'priority',
-            //'cost',
-            //'result_need:ntext',
-            //'result_fact:ntext',
-            //'status',
+            [
+                'attribute' => 'audit_id',
+                'format' => 'raw',
+                'content' => function ($model) {
+                    $str = '<b> #' . $model->audit_id . '</b> ';
+                    $str .= '<a href="'. Url::to(['audit/statistic', 'id' => $model->audit_id]).'">Просмотр</a>';
+                    return $str;
+                }
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'attribute' => 'date',
+                'format' => ['date', 'php:d.m.Y H:i'],
+            ],
+            [
+                'attribute' => 'date_need_execut',
+                'format' => ['date', 'php:d.m.Y H:i'],
+            ],
+            [
+                'attribute' => 'date_fact_execut',
+                'format' => ['date', 'php:d.m.Y H:i'],
+            ],
+            'priority',
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'content' => function ($model) {
+                    return $model->nameStatus;
+                }
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update}',
+            ],
         ],
     ]); ?>
 

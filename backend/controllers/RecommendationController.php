@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Audit;
 use common\models\Recommendation;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -100,14 +101,27 @@ class RecommendationController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $modelRecom = $this->findModel($id);
+        $model = Audit::find()->where(['id' => $modelRecom->audit_id])->one();
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost && $modelRecom->load($this->request->post())) {
+
+            if(!empty($modelRecom->cost_fact) && !empty($modelRecom->result_fact)){
+                $modelRecom->status = 2;
+                $modelRecom->save();
+            } else {
+                return $this->render('_form_recommendation', [
+                    'model' => $model,
+                    'modelRecom' => $modelRecom,
+                ]);
+            }
+            
+            return $this->redirect(['index']);
         }
 
-        return $this->render('update', [
+        return $this->render('_form_recommendation', [
             'model' => $model,
+            'modelRecom' => $modelRecom,
         ]);
     }
 

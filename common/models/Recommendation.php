@@ -38,7 +38,7 @@ class Recommendation extends \yii\db\ActiveRecord
         return [
             [['name', 'description', 'result_need', 'dateNeed', 'priority', 'cost_need', 'priority'], 'required'],
             [['description', 'result_need', 'result_fact'], 'string'],
-            [['audit_id', 'date', 'date_need_execut', 'date_fact_execut', 'priority', 'cost_need', 'result_fact', 'status'], 'integer'],
+            [['audit_id', 'date', 'date_need_execut', 'date_fact_execut', 'priority', 'cost_need', 'cost_fact', 'status'], 'integer'],
             [['name'], 'string', 'max' => 255],
 
             ['date_need_execut', 'integer'], //проверка
@@ -60,7 +60,7 @@ class Recommendation extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Наименование',
             'description' => 'Описание',
-            'audit_id' => 'Audit ID',
+            'audit_id' => 'Аудит ID',
             'date' => 'Дата создания',
             'date_need_execut' => 'Дата ожидаемого выполнения',
             'date_fact_execut' => 'Дата фактического выполнения',
@@ -71,7 +71,7 @@ class Recommendation extends \yii\db\ActiveRecord
             'cost_fact' => 'Фактические затраты',
             'result_need' => 'Ожидаемый результат',
             'result_fact' => 'Фактический результат',
-            'status' => 'Status',
+            'status' => 'Статус',
         ];
     }
 
@@ -99,4 +99,14 @@ class Recommendation extends \yii\db\ActiveRecord
         $this->date_fact_execut = $date->format('U');
     }
 
+    public function getNameStatus()
+    {
+        $statuses = [
+            0 => '<p style="color:#FF8C00;">#'. $this->status .' Создана</p>',
+            1 => '<p style="color:#8B0000;">#'. $this->status .' Не выполнено</p>',
+            2 => '<p style="color:DarkGreen;">#'. $this->status .' Выполнено</p>',
+        ];
+
+        return $statuses[$this->status];
+    }
 }
