@@ -21,7 +21,8 @@ use yii\helpers\ArrayHelper;
  */
 class Log extends \yii\db\ActiveRecord
 {
-    public $date_pick;
+    public $key_one = "sh73h2j918a18phw";
+    public $key_two = "nd129n2d91n1nddd190k";
 
     /**
      * {@inheritdoc}
@@ -63,6 +64,23 @@ class Log extends \yii\db\ActiveRecord
             'type' => 'Тип',
             'date' => 'Дата',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+
+            $this->name = utf8_encode(Yii::$app->security->encryptByKey($this->name, $this->key_one));
+            $this->description = utf8_encode(Yii::$app->security->encryptByKey($this->description, $this->key_two));
+
+            return true;
+        }
+        return false;
+    }
+    public function afterFind()
+    {
+        $this->name = Yii::$app->security->decryptByKey(utf8_decode($this->name), $this->key_one);
+        $this->description = Yii::$app->security->decryptByKey(utf8_decode($this->description), $this->key_two);
     }
 
     public function getLogCategory()
