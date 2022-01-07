@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Log;
 use common\models\Recommendation;
 use yii\helpers\Html;
 
@@ -12,6 +13,8 @@ $errorRecs = Recommendation::getErrorRecs();
 
 $sucessRecsPercent = round((($sucessRecs / $allRecs) * 100), 0);
 $errorRecsPercent = round((($errorRecs / $allRecs) * 100), 0);
+
+$newLogs = Log::find()->where(['type' => 0])->count();
 
 ?>
 
@@ -28,7 +31,27 @@ $errorRecsPercent = round((($errorRecs / $allRecs) * 100), 0);
         <div class="navbar-custom-menu">
 
             <ul class="nav navbar-nav">
-
+            <li class="dropdown notifications-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bell-o"></i>
+                        <span class="label label-warning"><?=$newLogs?></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">Новых логов - <?=$newLogs?></li>
+                        <li>
+                            <!-- inner menu: contains the actual data -->
+                            <ul class="menu">
+                               
+                                <li>
+                                    <a href="/admin/log">
+                                        <i class="fa fa-warning text-yellow"> Просмотр </i>
+                                    </a>
+                                </li>
+                               
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
                 <!-- Tasks: style can be found in dropdown.less -->
                 <li class="dropdown tasks-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

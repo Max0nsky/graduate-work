@@ -160,6 +160,7 @@ class AuditController extends Controller
     {
         $model = $this->findModel($id);
         $recommendations = $model->recommendations;
+        $logs = $model->logs;
         if (($model->status == 1) && (count($recommendations) > 0)) {
 
             $model->status = 2;
@@ -168,6 +169,10 @@ class AuditController extends Controller
                 foreach ($recommendations as $recommendation) {
                     $recommendation->status = 1;
                     $recommendation->save();
+                }
+                foreach ($logs as $log) {
+                    $log->type = $model->id;
+                    $log->save();
                 }
             }
         }

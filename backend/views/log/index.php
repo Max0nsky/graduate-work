@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return '#' . $user->id . ' ' . $user->username;
                 }
             ],
-
+            'type',
             [
                 'attribute' => 'date',
                 'format' => ['date', 'php:d.m.Y h:m'],
