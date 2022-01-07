@@ -38,6 +38,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             [
+                'attribute' => 'threat_id',
+                'content' => function ($model) {
+                    $threat = $model->threat;
+                    return '#' . $threat->id . ' ' . $threat->name;
+                }
+            ],
+
+            [
                 'attribute' => 'user_id',
                 'content' => function ($model) {
                     $user = $model->user;

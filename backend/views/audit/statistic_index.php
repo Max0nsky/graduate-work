@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endif; ?>
         <div class="col-sm-12">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <?= Highcharts::widget([
                         'options' => [
                             'title' => ['text' => 'Приоритетное соотношение'],
@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     ?>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <?= Highcharts::widget([
                         'options' => [
                             'title' => ['text' => 'Соотношение категорий'],
@@ -72,6 +72,27 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'type' => 'pie',
                                     'name' => 'Процент',
                                     'data' => $diagr_category,
+                                ]
+                            ],
+                        ],
+                    ]);
+
+                    ?>
+                </div>
+                <div class="col-sm-4">
+                    <?= Highcharts::widget([
+                        'options' => [
+                            'title' => ['text' => 'Соотношение угроз'],
+                            'plotOptions' => [
+                                'pie' => [
+                                    'cursor' => 'pointer',
+                                ],
+                            ],
+                            'series' => [
+                                [
+                                    'type' => 'pie',
+                                    'name' => 'Процент',
+                                    'data' => $diagr_threat,
                                 ]
                             ],
                         ],
@@ -114,6 +135,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'content' => function ($model) {
                     $objectSystem = $model->objectSystem;
                     return '#' . $objectSystem->id . ' ' . $objectSystem->name;
+                }
+            ],
+
+            [
+                'attribute' => 'threat_id',
+                'content' => function ($model) {
+                    $threat = $model->threat;
+                    return '#' . $threat->id . ' ' . $threat->name;
                 }
             ],
 

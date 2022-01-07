@@ -19,7 +19,7 @@ class LogSearch extends Log
     public function rules()
     {
         return [
-            [['id', 'log_category_id', 'user_id', 'object_id', 'priority', 'damages', 'type', 'date'], 'integer'],
+            [['id', 'log_category_id', 'user_id', 'object_id', 'priority', 'damages', 'type', 'date', 'threat_id'], 'integer'],
             [['name', 'description'], 'safe'],
             ['ids', 'each', 'rule' => ['integer']],
         ];
@@ -69,6 +69,7 @@ class LogSearch extends Log
             'log_category_id' => $this->log_category_id,
             'user_id' => $this->user_id,
             'object_id' => $this->object_id,
+            'threat_id' => $this->threat_id,
             'priority' => $this->priority,
             'damages' => $this->damages,
             'type' => $this->type,

@@ -2,6 +2,7 @@
 
 use common\models\LogCategory;
 use common\models\ObjectSystem;
+use common\models\Threat;
 use kartik\date\DatePicker;
 use kartik\datetime\DateTimePicker;
 use kartik\select2\Select2;
@@ -17,10 +18,59 @@ use yii\widgets\ActiveForm;
 
 
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-sm-3">
+        
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-4">
+            <?=
+            $form->field($model, 'log_category_id')->widget(Select2::class, [
+                'data' => LogCategory::getListForSelect('name'),
+                'options' => ['placeholder' => 'Выберите категорию'],
+                'pluginOptions' => [
+                    'tabindex' => false,
+                    'tags' => false,
+                    'tokenSeparators' => [',', ' '],
+                ],
+            ])->label('Категория');
+            ?>
+        </div>
+        <div class="col-sm-4">
+            <?=
+            $form->field($model, 'object_id')->widget(Select2::class, [
+                'data' => ObjectSystem::getListForSelect('name'),
+                'options' => ['placeholder' => 'Выберите объект'],
+                'pluginOptions' => [
+                    'tabindex' => false,
+                    'tags' => false,
+                    'tokenSeparators' => [',', ' '],
+                ],
+            ])->label('Объект');
+            ?>
+        </div>
+
+        <div class="col-sm-4">
+            <?=
+            $form->field($model, 'threat_id')->widget(Select2::class, [
+                'data' => Threat::getListForSelect('name'),
+                'options' => ['placeholder' => 'Выберите угрозу'],
+                'pluginOptions' => [
+                    'tabindex' => false,
+                    'tags' => false,
+                    'tokenSeparators' => [',', ' '],
+                ],
+            ])->label('Угроза');
+            ?>
+        </div>
+
+
+
+        <div class="col-sm-4">
             <?= $form->field($model, 'dateTime')->widget(DateTimePicker::classname(), [
                 // 'options' => ['placeholder' => 'Введите время ...'],
                 // 'pluginOptions' => [
@@ -42,38 +92,7 @@ use yii\widgets\ActiveForm;
             ]); ?>
         </div>
 
-    </div>
-
-    <div class="row">
-
-        <div class="col-sm-3">
-            <?=
-            $form->field($model, 'log_category_id')->widget(Select2::class, [
-                'data' => LogCategory::getListForSelect('name'),
-                'options' => ['placeholder' => 'Выберите категорию'],
-                'pluginOptions' => [
-                    'tabindex' => false,
-                    'tags' => false,
-                    'tokenSeparators' => [',', ' '],
-                ],
-            ])->label('Категория');
-            ?>
-        </div>
-        <div class="col-sm-3">
-            <?=
-            $form->field($model, 'object_id')->widget(Select2::class, [
-                'data' => ObjectSystem::getListForSelect('name'),
-                'options' => ['placeholder' => 'Выберите объект'],
-                'pluginOptions' => [
-                    'tabindex' => false,
-                    'tags' => false,
-                    'tokenSeparators' => [',', ' '],
-                ],
-            ])->label('Объект');
-            ?>
-        </div>
-
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <?=
             $form->field($model, 'priority')->dropDownList([
                 '1' => '1',
@@ -89,7 +108,7 @@ use yii\widgets\ActiveForm;
             ]);
             ?>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <?= $form->field($model, 'damages')->textInput() ?>
         </div>
     </div>

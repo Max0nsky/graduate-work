@@ -38,7 +38,7 @@ class Log extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['log_category_id', 'user_id', 'object_id', 'priority', 'damages', 'type'], 'integer'],
+            [['log_category_id', 'user_id', 'object_id', 'threat_id', 'priority', 'damages', 'type'], 'integer'],
             [['name'], 'string', 'max' => 255],
             ['date', 'integer'], //проверка
             ['date', 'default', 'value' => time()], //значение по умолчанию
@@ -59,10 +59,12 @@ class Log extends \yii\db\ActiveRecord
             'description' => 'Описание',
             'user_id' => 'Пользователь',
             'object_id' => 'Объект',
+            'threat_id' => 'Угроза',
             'priority' => 'Приоритет',
             'damages' => 'Убытки',
             'type' => 'Тип',
             'date' => 'Дата',
+            'dateTime' => 'Дата',
         ];
     }
 
@@ -93,6 +95,11 @@ class Log extends \yii\db\ActiveRecord
         return $this->hasOne(ObjectSystem::class, ['id' => 'object_id']);
     }
 
+    public function getThreat()
+    {
+        return $this->hasOne(Threat::class, ['id' => 'threat_id']);
+    }
+    
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);

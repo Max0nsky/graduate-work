@@ -61,7 +61,7 @@
                     ['label' => 'Угрозы', 'icon' => 'bomb', 'url' => ['/threat']],
                     ['label' => 'Аудит безопасности', 'icon' => 'list', 'url' => ['/audit']],
                     ['label' => 'Рекомендации', 'icon' => 'book', 'url' => ['/recommendation']],
-                    ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
+                    // ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     // [
                     //     'label' => 'Some tools',

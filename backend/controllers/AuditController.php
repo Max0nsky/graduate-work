@@ -78,13 +78,15 @@ class AuditController extends Controller
 
         $diagr_priority = $this->calculatePriorityLogs($logs);
         $diagr_category = $this->calculateCategoryLogs($logs);
-
+        $diagr_threat = $this->calculateThreatLogs($logs);
+        
         return $this->render('statistic_index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'modelAudit' => $model,
             'diagr_priority' => $diagr_priority,
             'diagr_category' => $diagr_category,
+            'diagr_threat' => $diagr_threat,
         ]);
     }
 
@@ -343,6 +345,26 @@ class AuditController extends Controller
             $total = count($logs);
             foreach ($logCats as $category => $count) {
                 $resArr[] = [$category, round((($count / $total) * 100), 1)];
+            }
+        }
+
+        return $resArr;
+    }
+
+    public function calculateThreatLogs($logs)
+    {
+        $resArr = [];
+
+        $logThreats = [];
+        if (!empty($logs)) {
+
+            foreach ($logs as $log) {
+                $logThreats[$log->threat->name] += 1;
+            }
+
+            $total = count($logs);
+            foreach ($logThreats as $threat => $count) {
+                $resArr[] = [$threat, round((($count / $total) * 100), 1)];
             }
         }
 
