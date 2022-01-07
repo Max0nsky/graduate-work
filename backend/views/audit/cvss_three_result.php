@@ -9,7 +9,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Audit */
 
-$this->title = 'CVSS-2-результат';
+$this->title = 'CVSS-3-результат';
 
 ?>
 <div class="audit-view">

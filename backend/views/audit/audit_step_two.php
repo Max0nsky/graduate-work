@@ -31,9 +31,11 @@ $recommendations = $model->recommendations;
             <div class="col-sm-2 audit-link">
                 <a class="btn btn-info" href="<?= Url::to(['audit/statistic', 'id' => $model->id]); ?>">Просмотр статистики</a>
             </div>
-
             <div class="col-sm-2 audit-link">
-                <a class="btn btn-info" href="<?= Url::to(['audit/cvss']); ?>">CVSS-калькулятор</a>
+                <a class="btn btn-info" href="<?= Url::to(['audit/cvss']); ?>">CVSS-калькулятор v2</a>
+            </div>
+            <div class="col-sm-2 audit-link">
+                <a class="btn btn-info" href="<?= Url::to(['audit/cvss-three']); ?>">CVSS-калькулятор v3</a>
             </div>
             <div class="col-sm-2 audit-link">
                 <a class="btn btn-info" href="<?= Url::to(['audit/add-recommendation', 'id' => $model->id]); ?>">Добавить рекомендации</a>

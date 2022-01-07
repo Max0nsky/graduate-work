@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\Audit;
+use common\models\Cvss3 as ModelsCvss3;
 use common\models\ObjectCategory;
 use common\models\ObjectSystem;
 use common\models\Recommendation;
@@ -11,6 +12,7 @@ use common\models\search\LogAuditSearch;
 use common\models\search\LogSearch;
 use common\models\Threat;
 use Grav\Plugin\HighlightPlugin;
+use SecurityDatabase\Cvss\Cvss3;
 use SimpleXLSX;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -45,6 +47,8 @@ class AuditController extends Controller
      */
     public function actionIndex()
     {
+
+
         $searchModel = new AuditSearch();
 
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -276,6 +280,35 @@ class AuditController extends Controller
             ]);
         }
         return $this->render('cvss');
+    }
+
+    public function actionCvssThree()
+    {
+        if ($this->request->isPost && ($post = $this->request->post())) {
+
+            $resultCvss = [];
+
+            unset($post['_csrf']);
+            $vector = 'CVSS:3.1';
+            foreach ($post as $key => $value) {
+                $vector .= "/".$key.":".$value;
+            }
+
+            $cvss = new ModelsCvss3();
+            $cvss->register($vector);
+            $scores = $cvss->getScores();
+ 
+            $resultCvss['vector'] = $vector;
+            $resultCvss['BaseScore'] = $scores['baseScore'];
+            $resultCvss['Impact'] = $scores['impactSubScore'];
+            $resultCvss['TemporalScore'] = $scores['temporalScore'];
+            $resultCvss['EnvironmentalScore'] = $scores['envScore'];
+
+            return $this->render('cvss_three_result', [
+                'resultCvss' => $resultCvss,
+            ]);
+        }
+        return $this->render('cvss_three');
     }
 
     public function calculatePriorityLogs($logs)
