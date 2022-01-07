@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Audit */
 
-$this->title = 'CVSS-калькулятор';
+$this->title = 'CVSS-калькулятор v2';
 
 ?>
 <div class="audit-view">

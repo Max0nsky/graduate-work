@@ -31,6 +31,15 @@
                 'items' => [
                     ['label' => 'Меню', 'options' => ['class' => 'header']],
                     [
+                        'label' => 'Оценка уязвимостей',
+                        'icon' => 'calculator',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => 'Cvss-v2', 'icon' => 'plus-circle', 'url' => ['/audit/cvss'],],
+                            ['label' => 'Cvss-v3.1', 'icon' => 'plus-circle', 'url' => ['/audit/cvss-three'],],
+                        ],
+                    ],
+                    [
                         'label' => 'Объекты',
                         'icon' => 'circle',
                         'url' => '#',
@@ -48,11 +57,10 @@
                             ['label' => 'Категории логов', 'icon' => 'file', 'url' => ['/log-category'],],
                         ],
                     ],
+
                     ['label' => 'Угрозы', 'icon' => 'bomb', 'url' => ['/threat']],
                     ['label' => 'Аудит безопасности', 'icon' => 'list', 'url' => ['/audit']],
                     ['label' => 'Рекомендации', 'icon' => 'book', 'url' => ['/recommendation']],
-
-                    
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     // [
