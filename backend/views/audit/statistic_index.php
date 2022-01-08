@@ -10,7 +10,9 @@ use yii\helpers\Url;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Логи для аудита #' . $modelAudit->id;
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => 'Страница аудита', 'url' => ['/audit/audit-step-two?id='.$modelAudit->id]];
+
+
 ?>
 <div class="log-index">
     <div class="row">
@@ -22,9 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-sm-2 audit-link">
                     <a class="btn btn-info" href="<?= Url::to(['audit/statistic', 'id' => $modelAudit->id]); ?>">Просмотр статистики</a>
                 </div>
-
                 <div class="col-sm-2 audit-link">
-                    <a class="btn btn-info" href="<?= Url::to(['audit/cvss']); ?>">CVSS-калькулятор</a>
+                    <a class="btn btn-info" href="<?= Url::to(['audit/cvss']); ?>">CVSS-калькулятор v2</a>
+                </div>
+                <div class="col-sm-2 audit-link">
+                    <a class="btn btn-info" href="<?= Url::to(['audit/cvss-three']); ?>">CVSS-калькулятор v3</a>
                 </div>
                 <div class="col-sm-2 audit-link">
                     <a class="btn btn-info" href="<?= Url::to(['audit/add-recommendation', 'id' => $modelAudit->id]); ?>">Добавить рекомендации</a>
@@ -102,6 +106,108 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
         </div>
+        <br>
+        <div class="col-sm-12">
+            <div class="row">
+
+                <div class="col-sm-6">
+                    <?= Highcharts::widget([
+                        'options' => [
+                            'title' => ['text' => 'Влияние на конфиденциальность, целостность, доступность'],
+                            'plotOptions' => [
+                                'pie' => [
+                                    'cursor' => 'pointer',
+                                ],
+                            ],
+                            'series' => [
+                                [
+                                    'type' => 'pie',
+                                    'name' => 'Процент',
+                                    'data' => $diagr_kcd,
+                                ]
+                            ],
+                        ],
+                    ]);
+
+                    ?>
+                </div>
+
+                <div class="col-sm-6">
+                    <?= Highcharts::widget([
+                        'options' => [
+                            'title' => ['text' => 'Возможные источники угроз'],
+                            'plotOptions' => [
+                                'pie' => [
+                                    'cursor' => 'pointer',
+                                ],
+                            ],
+                            'series' => [
+                                [
+                                    'type' => 'pie',
+                                    'name' => 'Процент',
+                                    'data' => $diagr_source,
+                                ]
+                            ],
+                        ],
+                    ]);
+
+                    ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <?= Highcharts::widget([
+
+                        'scripts' => [
+                            'modules/exporting',
+                            'themes/grid-light',
+                        ],
+                        'options' => [
+                            'chart' => [
+                                'scrollablePlotArea' => [
+                                    'minWidth' => 200,
+                                    'scrollPositionX' => 1
+                                ],
+                            ],
+                            'title' => [
+                                'text' => 'Статистика логов'
+                            ],
+                            'xAxis' => [
+                                'labels' => [
+                                    'overflow' => 'justify',
+                                ],
+                                'tickLength' => 0,
+                                'categories' => $statistic_days['dateNames'],
+                            ],
+
+                            'series' => [
+                                [
+                                    'type' => 'column',
+                                    'name' => 'Количество',
+                                    'data' => $statistic_days['count'],
+
+                                ],
+                                [
+                                    'type' => 'column',
+                                    'name' => 'Убытки',
+                                    'data' => $statistic_days['cost'],
+                                ],
+                                [
+                                    'type' => 'column',
+                                    'name' => 'Важность',
+                                    'data' => $statistic_days['priority'],
+                                ],
+
+                            ],
+                        ]
+                    ]);
+                    ?>
+                </div>
+            </div>
+        </div>
     </div>
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -110,8 +216,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
+            'id',
             [
                 'attribute' => 'name',
                 'format' => 'raw',
@@ -159,7 +265,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'date',
-                'format' => ['date', 'php:d.m.Y h:m'],
+                'content' => function ($model) {
+                    return  $model->dateTime;
+                }
             ],
 
         ],

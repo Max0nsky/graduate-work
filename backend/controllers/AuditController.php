@@ -89,6 +89,9 @@ class AuditController extends Controller
         $diagr_priority = $this->calculatePriorityLogs($logs);
         $diagr_category = $this->calculateCategoryLogs($logs);
         $diagr_threat = $this->calculateThreatLogs($logs);
+        $diagr_kcd = $this->calculateKcdLogs($logs);
+        $diagr_source = $this->calculateSourceLogs($logs);
+        $statistic_days = $this->calculateDaysLogs($logs);
         
         return $this->render('statistic_index', [
             'searchModel' => $searchModel,
@@ -97,6 +100,9 @@ class AuditController extends Controller
             'diagr_priority' => $diagr_priority,
             'diagr_category' => $diagr_category,
             'diagr_threat' => $diagr_threat,
+            'diagr_kcd' => $diagr_kcd,
+            'diagr_source' => $diagr_source,
+            'statistic_days' => $statistic_days,
         ]);
     }
 
@@ -339,7 +345,7 @@ class AuditController extends Controller
             }
             $total = count($logs);
             foreach ($logPriority as $priority => $count) {
-                $resArr[] = ['#' . $priority, round((($count / $total) * 100), 1)];
+                $resArr[] = ['Значение ' . $priority, round((($count / $total) * 100), 1)];
             }
         }
 
@@ -384,5 +390,84 @@ class AuditController extends Controller
         }
 
         return $resArr;
+    }
+
+    public function calculateKcdLogs($logs)
+    {
+        $resArr = [];
+
+        $logThreats = [];
+        if (!empty($logs)) {
+
+            $total = 0;
+            foreach ($logs as $log) {
+                $threat = $log->threat;
+                
+                if($threat->charact_k == 1){
+                    $logThreats['Конфиденциальность'] += 1;
+                    $total++;
+                }
+                if($threat->charact_c == 1){
+                    $logThreats['Целостность'] += 1;
+                    $total++;
+                }
+                if($threat->charact_d == 1){
+                    $logThreats['Доступность'] += 1;
+                    $total++;
+                }
+            }
+
+            foreach ($logThreats as $threatElem => $count) {
+                $resArr[] = [$threatElem, round((($count / $total) * 100), 1)];
+            }
+        }
+
+        return $resArr;
+    }
+
+    public function calculateSourceLogs($logs)
+    {
+        $resArr = [];
+
+        $logThreats = [];
+        if (!empty($logs)) {
+
+            foreach ($logs as $log) {
+                $logThreats[$log->threat->source] += 1;
+            }
+
+            $total = count($logs);
+            foreach ($logThreats as $threat => $count) {
+                $resArr[] = [$threat, round((($count / $total) * 100), 1)];
+            }
+        }
+
+        return $resArr;
+    }
+
+    public function calculateDaysLogs($logs)
+    {
+        $statisticForDates = [];
+        $arrDates = [];
+        
+        foreach ($logs as $log) {
+
+			$dateName = date('d-m-y', $log->date);
+
+			$arrDates[$dateName]['count'] += 1;
+			$arrDates[$dateName]['cost'] += $log->damages;
+			$arrDates[$dateName]['priority'] += $log->priority;
+
+		}
+        ksort($arrDates);
+		foreach ($arrDates as $dateName => $arrDate) {
+
+			$statisticForDates['dateNames'][] = $dateName;
+			$statisticForDates['count'][] = $arrDate['count'];
+			$statisticForDates['cost'][] = $arrDate['cost'];
+			$statisticForDates['priority'][] = $arrDate['priority'];
+		}
+
+		return $statisticForDates;
     }
 }
