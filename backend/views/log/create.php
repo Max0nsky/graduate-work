@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Log */
 
-$this->title = 'Добавить лог';
-$this->params['breadcrumbs'][] = ['label' => 'Logs', 'url' => ['index']];
+$this->title = 'Добавить запись';
+$this->params['breadcrumbs'][] = ['label' => 'Логируемые события', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="log-create">

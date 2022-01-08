@@ -111,3 +111,12 @@ a.desc:after {
 .audit-link {
     margin-bottom: 15px;
 }
+
+.dateinput {
+    height: auto !important;
+}
+
+.login-box-body {
+    text-align: center;
+    width: 300px;
+}

@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\Log */
 
 $this->title = 'Изменить лог: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Logs', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Логируемые события', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

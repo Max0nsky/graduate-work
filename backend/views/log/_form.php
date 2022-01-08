@@ -81,7 +81,7 @@ use yii\widgets\ActiveForm;
                 //     'weekStart' => 1, //неделя начинается с понедельника
                 //     'todayBtn' => true, //снизу кнопка "сегодня"
                 // ]
-                'options' => ['placeholder' => 'Введите время ...'],
+                'options' => ['placeholder' => 'Введите время ...', 'class' => 'dateinput'],
                 'pluginOptions' => [
                     'convertFormat' => true,
                     'autoclose' => true,

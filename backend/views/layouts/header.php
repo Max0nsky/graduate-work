@@ -11,8 +11,8 @@ $allRecs = Recommendation::getRecs();
 $sucessRecs = Recommendation::getSuccessRecs();
 $errorRecs = Recommendation::getErrorRecs();
 
-$sucessRecsPercent = round((($sucessRecs / $allRecs) * 100), 0);
-$errorRecsPercent = round((($errorRecs / $allRecs) * 100), 0);
+$sucessRecsPercent = ($allRecs > 0) ? round((($sucessRecs / $allRecs) * 100), 0) : 0;
+$errorRecsPercent = ($allRecs > 0) ? round((($errorRecs / $allRecs) * 100), 0) : 0;
 
 $newLogs = Log::find()->where(['type' => 0])->count();
 

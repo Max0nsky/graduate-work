@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\search\LogSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Логи';
+$this->title = 'Логируемые события';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="log-index">
@@ -55,7 +55,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'type',
             [
                 'attribute' => 'date',
-                'format' => ['date', 'php:d.m.Y h:m'],
+                'content' => function ($model) {
+                    return  $model->dateTime;
+                }
             ],
 
             ['class' => 'yii\grid\ActionColumn'],

@@ -18,8 +18,10 @@ class LogCategorySearch extends LogCategory
     public function rules(): array
     {
         return [
+            [['id'], 'integer'],
             [['name'], 'safe'],
             [['description'], 'safe'],
+            [['priority'], 'integer'],
         ];
     }
 
@@ -52,6 +54,8 @@ class LogCategorySearch extends LogCategory
         if (!$this->validate()) {
             return $dataProvider;
         }
+        $query->andFilterWhere(['=', 'id', $this->id]);
+        $query->andFilterWhere(['=', 'priority', $this->priority]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
         $query->andFilterWhere(['like', 'description', $this->description]);
