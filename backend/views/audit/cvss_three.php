@@ -190,7 +190,7 @@ $this->title = 'CVSS-калькулятор v3.1';
             </div>
 
             <div class="sel">
-                <br>Взаимодействие с пользователем корр. (MS):<br>
+                <br>Влияние на другие компоненты системы корр. (MS):<br>
                 <select class="select" name="MS" size="1">
                     <option value="X">Не определено (X)</option>
                     <option value="U">Не оказывает (U)</option>

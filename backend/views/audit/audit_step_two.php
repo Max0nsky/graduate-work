@@ -57,8 +57,8 @@ $recommendations = $model->recommendations;
                         <p><?= $model->description ?></p>
                         <p>
                             <b>Выбранный период для анализа:</b> <br>
-                            от <?= date('d.m.Y h:m', $model->date_start) ?> <br>
-                            до <?= date('d.m.Y h:m', $model->date_finish) ?> <br>
+                            от <?= $model->dateTimeStart ?> <br>
+                            до <?= $model->dateTimeFinish ?> <br>
                         </p>
 
                         <?php if (!empty($logCategories)) : ?>

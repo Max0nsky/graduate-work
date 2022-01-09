@@ -91,8 +91,9 @@ class AuditController extends Controller
         $diagr_threat = $this->calculateThreatLogs($logs);
         $diagr_kcd = $this->calculateKcdLogs($logs);
         $diagr_source = $this->calculateSourceLogs($logs);
+        $diagr_obj = $this->calculateObjectLogs($logs);
         $statistic_days = $this->calculateDaysLogs($logs);
-        
+
         return $this->render('statistic_index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -102,6 +103,7 @@ class AuditController extends Controller
             'diagr_threat' => $diagr_threat,
             'diagr_kcd' => $diagr_kcd,
             'diagr_source' => $diagr_source,
+            'diagr_obj' => $diagr_obj,
             'statistic_days' => $statistic_days,
         ]);
     }
@@ -314,18 +316,20 @@ class AuditController extends Controller
             unset($post['_csrf']);
             $vector = 'CVSS:3.1';
             foreach ($post as $key => $value) {
-                $vector .= "/".$key.":".$value;
+                $vector .= "/" . $key . ":" . $value;
             }
 
             $cvss = new ModelsCvss3();
             $cvss->register($vector);
             $scores = $cvss->getScores();
- 
+
+
             $resultCvss['vector'] = $vector;
             $resultCvss['BaseScore'] = $scores['baseScore'];
             $resultCvss['Impact'] = $scores['impactSubScore'];
             $resultCvss['TemporalScore'] = $scores['temporalScore'];
             $resultCvss['EnvironmentalScore'] = $scores['envScore'];
+            $resultCvss['overallScore'] = $scores['overallScore'];
 
             return $this->render('cvss_three_result', [
                 'resultCvss' => $resultCvss,
@@ -402,16 +406,16 @@ class AuditController extends Controller
             $total = 0;
             foreach ($logs as $log) {
                 $threat = $log->threat;
-                
-                if($threat->charact_k == 1){
+
+                if ($threat->charact_k == 1) {
                     $logThreats['Конфиденциальность'] += 1;
                     $total++;
                 }
-                if($threat->charact_c == 1){
+                if ($threat->charact_c == 1) {
                     $logThreats['Целостность'] += 1;
                     $total++;
                 }
-                if($threat->charact_d == 1){
+                if ($threat->charact_d == 1) {
                     $logThreats['Доступность'] += 1;
                     $total++;
                 }
@@ -445,29 +449,47 @@ class AuditController extends Controller
         return $resArr;
     }
 
+    public function calculateObjectLogs($logs)
+    {
+        $resArr = [];
+        if (!empty($logs)) {
+
+            $logObs = [];
+            foreach ($logs as $log) {
+                $logObs[$log->objectSystem->name] += 1;
+            }
+
+            $total = count($logs);
+            foreach ($logObs as $ob => $count) {
+                $resArr[] = [$ob, round((($count / $total) * 100), 1)];
+            }
+        }
+
+        return $resArr;
+    }
+
     public function calculateDaysLogs($logs)
     {
         $statisticForDates = [];
         $arrDates = [];
-        
+
         foreach ($logs as $log) {
 
-			$dateName = date('d-m-y', $log->date);
+            $dateName = date('d-m-y', $log->date);
 
-			$arrDates[$dateName]['count'] += 1;
-			$arrDates[$dateName]['cost'] += $log->damages;
-			$arrDates[$dateName]['priority'] += $log->priority;
-
-		}
+            $arrDates[$dateName]['count'] += 1;
+            $arrDates[$dateName]['cost'] += $log->damages;
+            $arrDates[$dateName]['priority'] += $log->priority;
+        }
         ksort($arrDates);
-		foreach ($arrDates as $dateName => $arrDate) {
+        foreach ($arrDates as $dateName => $arrDate) {
 
-			$statisticForDates['dateNames'][] = $dateName;
-			$statisticForDates['count'][] = $arrDate['count'];
-			$statisticForDates['cost'][] = $arrDate['cost'];
-			$statisticForDates['priority'][] = $arrDate['priority'];
-		}
+            $statisticForDates['dateNames'][] = $dateName;
+            $statisticForDates['count'][] = $arrDate['count'];
+            $statisticForDates['cost'][] = $arrDate['cost'];
+            $statisticForDates['priority'][] = $arrDate['priority'];
+        }
 
-		return $statisticForDates;
+        return $statisticForDates;
     }
 }

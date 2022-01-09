@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Страница аудита', 'u
                 <div class="col-sm-4">
                     <?= Highcharts::widget([
                         'options' => [
-                            'title' => ['text' => 'Соотношение категорий'],
+                            'title' => ['text' => 'Соотношение категорий логов'],
                             'plotOptions' => [
                                 'pie' => [
                                     'cursor' => 'pointer',
@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Страница аудита', 'u
                 <div class="col-sm-4">
                     <?= Highcharts::widget([
                         'options' => [
-                            'title' => ['text' => 'Соотношение угроз'],
+                            'title' => ['text' => 'Соотношение предполагаемых угроз'],
                             'plotOptions' => [
                                 'pie' => [
                                     'cursor' => 'pointer',
@@ -110,7 +110,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Страница аудита', 'u
         <div class="col-sm-12">
             <div class="row">
 
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <?= Highcharts::widget([
                         'options' => [
                             'title' => ['text' => 'Влияние на конфиденциальность, целостность, доступность'],
@@ -132,7 +132,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Страница аудита', 'u
                     ?>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <?= Highcharts::widget([
                         'options' => [
                             'title' => ['text' => 'Возможные источники угроз'],
@@ -146,6 +146,28 @@ $this->params['breadcrumbs'][] = ['label' => 'Страница аудита', 'u
                                     'type' => 'pie',
                                     'name' => 'Процент',
                                     'data' => $diagr_source,
+                                ]
+                            ],
+                        ],
+                    ]);
+
+                    ?>
+                </div>
+
+                <div class="col-sm-4">
+                    <?= Highcharts::widget([
+                        'options' => [
+                            'title' => ['text' => 'Соотношение объектов'],
+                            'plotOptions' => [
+                                'pie' => [
+                                    'cursor' => 'pointer',
+                                ],
+                            ],
+                            'series' => [
+                                [
+                                    'type' => 'pie',
+                                    'name' => 'Процент',
+                                    'data' => $diagr_obj,
                                 ]
                             ],
                         ],
@@ -173,7 +195,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Страница аудита', 'u
                                 ],
                             ],
                             'title' => [
-                                'text' => 'Статистика логов'
+                                'text' => 'Суточная статистика логов'
                             ],
                             'xAxis' => [
                                 'labels' => [
@@ -260,8 +282,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Страница аудита', 'u
                 }
             ],
 
-            'attribute' => 'damages',
-
+            'attribute' => 'priority',
 
             [
                 'attribute' => 'date',

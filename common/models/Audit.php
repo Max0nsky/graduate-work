@@ -296,6 +296,7 @@ class Audit extends \yii\db\ActiveRecord
             $result = "Критический уровень опасности.";
         }
 
+        
         return $result;
     }
 

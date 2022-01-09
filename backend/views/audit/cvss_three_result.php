@@ -28,18 +28,23 @@ $this->title = 'CVSS-3-результат';
             </p>
             <p><b>Воздействие на систему:</b>
                 <?= "(" . round($resultCvss['Impact'], 1) . " из 10.0)" ?>.
-                <?= Audit::lvlCvss(round($Impact, 1)) ?>
+                <?= Audit::lvlCvss(round($resultCvss['Impact'], 1)) ?>
             </p>
             <p><b>Временные метрики:</b>
                 <?= "(" . $resultCvss['TemporalScore'] . " из 10.0)" ?>.
-                <?= Audit::lvlCvss($TemporalScore) ?>
+                <?= Audit::lvlCvss($resultCvss['TemporalScore']) ?>
             </p>
             <p><b>Контекстные метрики:</b>
                 <?= "(" . $resultCvss['EnvironmentalScore'] . " из 10.0)" ?>.
                 <?= Audit::lvlCvss($resultCvss['EnvironmentalScore']) ?>
+            </p>
+            <p><b>Общий результат:</b>
+                <?= "(" . $resultCvss['overallScore'] . " из 10.0)" ?>.
+                <?= Audit::lvlCvss($resultCvss['overallScore']) ?>
             </p><br>
+            
             <div class="col-sm-2 audit-link">
-                <a class="btn btn-info" href="<?= Url::to(['audit/cvss']); ?>">Пересчитать результат</a>
+                <a class="btn btn-info" href="<?= Url::to(['audit/cvss-three']); ?>">Пересчитать результат</a>
             </div>
         </div>
     </div>
